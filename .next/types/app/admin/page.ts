@@ -1,4 +1,4 @@
-// File: D:\Digital MErkato\DMerkato\Digital\app\admin\page.tsx
+// File: D:\Digital Merkato\Digital M\Digital\app\admin\page.tsx
 import * as entry from '../../../../app/admin/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

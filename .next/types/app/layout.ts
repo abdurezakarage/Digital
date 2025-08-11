@@ -1,4 +1,4 @@
-// File: D:\Digital MErkato\DMerkato\Digital\app\layout.tsx
+// File: D:\Digital Merkato\Digital M\Digital\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

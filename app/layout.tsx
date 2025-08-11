@@ -66,17 +66,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${poppins.variable}`}>
       <head>
-        {/* Font Awesome with integrity check */}
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5QvZ1FAd2P1dQKQh3cQhF"
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
-
-        {/* REMOVED the manual viewport meta tag - Next.js handles this automatically */}
-
         {/* Favicon links */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />

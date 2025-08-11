@@ -3,17 +3,16 @@
 import Image from "next/image";
 import BlogList from "./BlogManagement";
 import { useEffect, useState, FormEvent } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEnvelope,
-  faPhoneAlt,
-  faMapMarkerAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  faTelegramPlane,
-  faFacebookF,
-  faWhatsapp,
-} from "@fortawesome/free-brands-svg-icons";
+import { 
+  MdEmail, 
+  MdPhone, 
+  MdLocationOn 
+} from "react-icons/md";
+import { 
+  FaTelegramPlane, 
+  FaFacebookF, 
+  FaWhatsapp 
+} from "react-icons/fa";
 
 interface Service {
   id: number;
@@ -322,19 +321,19 @@ export default function Home() {
         <div className="contact-details">
           <div className="contact-card">
             <div className="contact-item">
-              <FontAwesomeIcon icon={faEnvelope} />
+              <MdEmail />
               <span>dev@digitalmerkato.com.et</span>
             </div>
             <div className="contact-item">
-              <FontAwesomeIcon icon={faPhoneAlt} />
+              <MdPhone />
               <span>+251 929 078 786</span>
             </div>
             <div className="contact-item">
-              <FontAwesomeIcon icon={faTelegramPlane} />
+              <FaTelegramPlane />
               <span>@digitalmerkato</span>
             </div>
             <div className="contact-item">
-              <FontAwesomeIcon icon={faMapMarkerAlt} />
+              <MdLocationOn />
               <span>Addis Ababa, Ethiopia</span>
             </div>
           </div>
@@ -406,13 +405,13 @@ export default function Home() {
             <p>Follow Us</p>
             <div className="social-icons">
               <a href="#" aria-label="Facebook">
-                <FontAwesomeIcon icon={faFacebookF} />
+                <FaFacebookF />
               </a>
               <a href="#" aria-label="Telegram">
-                <FontAwesomeIcon icon={faTelegramPlane} />
+                <FaTelegramPlane />
               </a>
               <a href="#" aria-label="WhatsApp">
-                <FontAwesomeIcon icon={faWhatsapp} />
+                <FaWhatsapp />
               </a>
             </div>
           </div>
