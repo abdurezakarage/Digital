@@ -48,6 +48,8 @@ export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [members, setMembers] = useState<Member[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [expandedServices, setExpandedServices] = useState<Set<number>>(new Set());
+  const [expandedProjects, setExpandedProjects] = useState<Set<number>>(new Set());
 
   const [contactData, setContactData] = useState<ContactData>({
     full_name: "",
@@ -60,6 +62,35 @@ export default function Home() {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
+
+  const toggleServiceDescription = (serviceId: number) => {
+    setExpandedServices(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(serviceId)) {
+        newSet.delete(serviceId);
+      } else {
+        newSet.add(serviceId);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleProjectDescription = (projectId: number) => {
+    setExpandedProjects(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(projectId)) {
+        newSet.delete(projectId);
+      } else {
+        newSet.add(projectId);
+      }
+      return newSet;
+    });
+  };
+
+  const truncateDescription = (description: string, maxLength: number = 100) => {
+    if (description.length <= maxLength) return description;
+    return description.substring(0, maxLength) + '...';
+  };
 
   // Scroll effect for header - fixed version
   useEffect(() => {
@@ -245,15 +276,37 @@ export default function Home() {
                 <Image
                   src={getImageUrl(s.image_icon)}
                   alt={s.title}
-                  width={100}
-                  height={100}
+                  width={230}
+                  height={200}
                   className="service-image"
                   style={{ objectPosition: "center" }}
                   unoptimized={!s.image_icon.startsWith(backendUrl || "")}
                 />
               </div>
               <h4>{s.title}</h4>
-              <p>{s.description}</p>
+              <p style={{ textAlign: 'justify' }}>
+                {expandedServices.has(s.id) 
+                  ? s.description 
+                  : truncateDescription(s.description)
+                }
+                {s.description.length > 100 && (
+                  <button
+                    onClick={() => toggleServiceDescription(s.id)}
+                    className="see-more-btn"
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#007bff',
+                      cursor: 'pointer',
+                      textDecoration: 'underline',
+                      marginLeft: '5px',
+                      fontSize: '14px'
+                    }}
+                  >
+                    {expandedServices.has(s.id) ? 'See less' : 'See more'}
+                  </button>
+                )}
+              </p>
             </div>
           ))}
         </div>
@@ -280,7 +333,29 @@ export default function Home() {
                 />
               </div>
               <h4>{p.title}</h4>
-              <p>{p.description}</p>
+              <p style={{ textAlign: 'justify' }}>
+                {expandedProjects.has(p.id) 
+                  ? p.description 
+                  : truncateDescription(p.description)
+                }
+                {p.description.length > 100 && (
+                  <button
+                    onClick={() => toggleProjectDescription(p.id)}
+                    className="see-more-btn"
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#007bff',
+                      cursor: 'pointer',
+                      textDecoration: 'underline',
+                      marginLeft: '5px',
+                      fontSize: '14px'
+                    }}
+                  >
+                    {expandedProjects.has(p.id) ? 'See less' : 'See more'}
+                  </button>
+                )}
+              </p>
             </div>
           ))}
         </div>

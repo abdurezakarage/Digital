@@ -7,6 +7,7 @@ export default function BlogManagement() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [expandedBlogs, setExpandedBlogs] = useState(new Set());
   const blogsPerPage = 3;
 
   useEffect(() => {
@@ -55,6 +56,30 @@ export default function BlogManagement() {
     }
   };
 
+  const toggleBlogExpansion = (blogId) => {
+    setExpandedBlogs(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(blogId)) {
+        newSet.delete(blogId);
+      } else {
+        newSet.add(blogId);
+      }
+      return newSet;
+    });
+  };
+
+  const getWordCount = (text) => {
+    if (!text) return 0;
+    return text.trim().split(/\s+/).length;
+  };
+
+  const truncateText = (text, maxWords = 50) => {
+    if (!text) return "";
+    const words = text.trim().split(/\s+/);
+    if (words.length <= maxWords) return text;
+    return words.slice(0, maxWords).join(" ") + "...";
+  };
+
   const paginatedBlogs = blogs.slice(
     currentPage * blogsPerPage,
     currentPage * blogsPerPage + blogsPerPage
@@ -96,38 +121,57 @@ export default function BlogManagement() {
             </button>
 
             <div className={styles.blogCarousel}>
-              {paginatedBlogs.map((blog) => (
-                <article key={blog.id} className={styles.blogCard}>
-                  {blog.image_icon && (
-                    <img
-                      src={blog.image_icon}
-                      alt={blog.title}
-                      className={styles.blogImage}
-                      onError={(e) => {
-                        e.target.src = "/images/placeholder-blog.jpg";
-                      }}
-                    />
-                  )}
-                  <div className={styles.blogContent}>
-                    <h2>{blog.title}</h2>
-                    <p className={styles.blogExcerpt}>{blog.content}</p>
-                    <div className={styles.blogMeta}>
-                      <time dateTime={blog.created_at}>
-                        {new Date(blog.created_at).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </time>
-                      <span
-                        className={`${styles.status} ${styles[blog.status]}`}
-                      >
-                        {blog.status}
-                      </span>
+              {paginatedBlogs.map((blog) => {
+                const isExpanded = expandedBlogs.has(blog.id);
+                const wordCount = getWordCount(blog.content);
+                const shouldShowToggle = wordCount > 50;
+                const displayText = shouldShowToggle && !isExpanded 
+                  ? truncateText(blog.content, 50) 
+                  : blog.content;
+
+                return (
+                  <article key={blog.id} className={styles.blogCard}>
+                    {blog.image_icon && (
+                      <img
+                        src={blog.image_icon}
+                        alt={blog.title}
+                        className={styles.blogImage}
+                        onError={(e) => {
+                          e.target.src = "/images/placeholder-blog.jpg";
+                        }}
+                      />
+                    )}
+                    <div className={styles.blogContent}>
+                      <h2>{blog.title}</h2>
+                      <p className={`${styles.blogExcerpt} ${isExpanded ? styles.expanded : ''}`}>
+                        {displayText}
+                      </p>
+                      {shouldShowToggle && (
+                        <button
+                          onClick={() => toggleBlogExpansion(blog.id)}
+                          className={styles.seeMoreButton}
+                        >
+                          {isExpanded ? "See less" : "See more"}
+                        </button>
+                      )}
+                      <div className={styles.blogMeta}>
+                        <time dateTime={blog.created_at}>
+                          {new Date(blog.created_at).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </time>
+                        <span
+                          className={`${styles.status} ${styles[blog.status]}`}
+                        >
+                          {blog.status}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
 
             <button
